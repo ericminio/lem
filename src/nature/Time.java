@@ -2,11 +2,9 @@ package nature;
 
 import java.util.Observable;
 
-
 public class Time extends Observable {
 	
 	private int period;
-	private Thread time;
 	private boolean started;
 
 	public Time() {
@@ -27,7 +25,7 @@ public class Time extends Observable {
 	}
 
 	public void start() {
-		Runnable runnable = new Runnable() {
+		new Thread(new Runnable() {
 			public void run() {
 				while (true) {
 					try {
@@ -36,12 +34,10 @@ public class Time extends Observable {
 						e.printStackTrace();
 					}
 					setChanged();
-					notifyObservers();
+					notifyObservers(period);
 				}
 			}
-		};
-		time = new Thread(runnable);
+		}).start();
 		started = true;
-		time.start();
 	}
 }

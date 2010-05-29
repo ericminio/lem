@@ -35,19 +35,25 @@ public class TimeTest {
 	}
 	
 	@Test public void
-	timeNeverStops() throws InterruptedException {
-		time.setPeriod(10);
-		Observer observerMock = mock(Observer.class);
-		time.addObserver(observerMock);
-		time.start();
-		Thread.currentThread().sleep(30);
-		verify(observerMock, atLeast(2)).update(time, null);
-	}
-	
-	@Test public void
 	indicatesWhenStarted() {
 		assertFalse(time.isStarted());
 		time.start();
 		assertTrue(time.isStarted());
 	}
+	
+	@Test public void
+	timeNeverStops() throws InterruptedException {
+		expectAtLeastTicsAfterDelayWhenPeriodIs(2, 30, 10);
+		expectAtLeastTicsAfterDelayWhenPeriodIs(5, 100, 20);
+	}
+
+	private void expectAtLeastTicsAfterDelayWhenPeriodIs(int expectedTics, int delay, int period) throws InterruptedException {
+		time.setPeriod(period);
+		Observer observerMock = mock(Observer.class);
+		time.addObserver(observerMock);
+		time.start();
+		Thread.currentThread().sleep(delay);
+		verify(observerMock, atLeast(expectedTics)).update(time, period);
+	}
+	
 }
