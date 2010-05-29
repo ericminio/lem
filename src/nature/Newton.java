@@ -1,8 +1,11 @@
 package nature;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import lem.Lem;
 
-public class Newton {
+public class Newton implements Observer {
 
 	private Lem lem;
 
@@ -10,12 +13,12 @@ public class Newton {
 		lem = aLem;
 	}
 
-	public void tic() {
-		lem.setAltitude(lem.getAltitude() - 1);
-	}
-
 	public Lem getLem() {
 		return lem;
+	}
+
+	public void update(Observable o, Object arg) {
+		lem.setAltitude(lem.getAltitude() - 1);
 	}
 
 }

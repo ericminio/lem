@@ -1,45 +1,47 @@
 package nature;
 
+import java.util.Observable;
 
-public class Time {
+
+public class Time extends Observable {
 	
-	private Newton newton;
+	private int period;
 	private Thread time;
 	private boolean started;
 
 	public Time() {
 		started = false;
+		setPeriod(1000);
+	}
+	
+	public boolean isStarted() {
+		return started;
 	}
 
-	public void setNewton(Newton newton) {
-		this.newton = newton;
+	public void setPeriod(int period) {
+		this.period = period;
+	}
+
+	public int getPeriod() {
+		return period;
 	}
 
 	public void start() {
 		Runnable runnable = new Runnable() {
-			
 			public void run() {
 				while (true) {
 					try {
-						Thread.currentThread().sleep(1000);
+						Thread.currentThread().sleep(period);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					newton.tic();
+					setChanged();
+					notifyObservers();
 				}
 			}
 		};
 		time = new Thread(runnable);
 		started = true;
 		time.start();
-	}
-
-	public Newton getNewton() {
-		return newton;
-	}
-
-	public boolean isStarted() {
-		return started;
 	}
 }

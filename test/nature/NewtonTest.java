@@ -2,10 +2,13 @@ package nature;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+
+import java.util.Observer;
+
 import lem.Lem;
 
 import org.junit.Before;
@@ -21,10 +24,15 @@ public class NewtonTest {
 	}
 	
 	@Test public void
+	isObserver() {
+		assertTrue(newton instanceof Observer);
+	}
+	
+	@Test public void
 	changesLemAltitudeEachTic() {
 		Lem lemMock = mock(Lem.class);
 		newton.setLem(lemMock);
-		newton.tic();
+		newton.update(null, null);
 		verify(lemMock).setAltitude(anyInt());
 	}
 	
@@ -33,7 +41,7 @@ public class NewtonTest {
 		Lem lem = new Lem();
 		lem.setAltitude(10);
 		newton.setLem(lem);
-		newton.tic();
+		newton.update(null, null);
 		assertThat(lem.getAltitude(), equalTo(9));
 	}
 	
