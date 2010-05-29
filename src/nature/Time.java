@@ -1,16 +1,18 @@
-package lem;
+package nature;
 
-public class Newton {
 
-	private Lem lem;
-	private Thread time;
+public class Time {
 	
-	public void setLem(Lem aLem) {
-		lem = aLem;
+	private Newton newton;
+	private Thread time;
+	private boolean started;
+
+	public Time() {
+		started = false;
 	}
 
-	public void tic() {
-		lem.setAltitude(lem.getAltitude() - 1);
+	public void setNewton(Newton newton) {
+		this.newton = newton;
 	}
 
 	public void start() {
@@ -24,12 +26,20 @@ public class Newton {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					tic();
+					newton.tic();
 				}
 			}
 		};
 		time = new Thread(runnable);
+		started = true;
 		time.start();
 	}
 
+	public Newton getNewton() {
+		return newton;
+	}
+
+	public boolean isStarted() {
+		return started;
+	}
 }

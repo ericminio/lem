@@ -1,4 +1,4 @@
-package lem;
+package nature;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -6,6 +6,7 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import lem.Lem;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,12 +37,4 @@ public class NewtonTest {
 		assertThat(lem.getAltitude(), equalTo(9));
 	}
 	
-	@Test public void
-	theLawOfNewtoNeverStops() throws InterruptedException {
-		Lem lemMock = mock(Lem.class);
-		newton.setLem(lemMock);
-		newton.start();
-		Thread.currentThread().sleep(3000);
-		verify(lemMock, atLeast(2)).setAltitude(anyInt());
-	}
 }
