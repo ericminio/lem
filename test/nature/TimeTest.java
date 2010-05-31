@@ -3,14 +3,12 @@ package nature;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
 import java.util.Observable;
 import java.util.Observer;
-
-import nature.Time;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -43,17 +41,16 @@ public class TimeTest {
 	
 	@Test public void
 	timeNeverStops() throws InterruptedException {
-		expectAtLeastTicsAfterDelayWhenPeriodIs(2, 30, 10);
-		expectAtLeastTicsAfterDelayWhenPeriodIs(5, 100, 20);
+		expectAtLeastGivenTicNumberAfterDelayWhenPeriodIs(2, 30, 10);
+		expectAtLeastGivenTicNumberAfterDelayWhenPeriodIs(5, 100, 20); 
 	}
 
-	private void expectAtLeastTicsAfterDelayWhenPeriodIs(int expectedTics, int delay, int period) throws InterruptedException {
+	private void expectAtLeastGivenTicNumberAfterDelayWhenPeriodIs(int expectedTics, int delay, int period) throws InterruptedException {
 		time.setPeriod(period);
 		Observer observerMock = mock(Observer.class);
 		time.addObserver(observerMock);
 		time.start();
-		Thread.currentThread().sleep(delay);
-		verify(observerMock, atLeast(expectedTics)).update(time, period);
+		verify(observerMock, timeout(delay).atLeast(expectedTics)).update(time, period);
 	}
 	
 }
